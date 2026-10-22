@@ -1,20 +1,160 @@
 
 <!DOCTYPE html>
-<html><head>
-<title>Salary Prediction</title>
-<link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salary Prediction</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            margin: 0;
+            padding: 30px 15px;
+            color: #1e293b;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 30px;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2563eb;
+        }
+
+        p {
+            text-align: center;
+            color: #64748b;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 16px;
+        }
+
+        input:focus, select:focus {
+            outline: 2px solid #93c5fd;
+            border-color: #2563eb;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            margin-top: 25px;
+            border: none;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+    </style>
 </head>
+
 <body>
-<div class="box">
-<h2>Salary Prediction</h2>
-<form action="/predict" method="post">
-<input type="number" step="0.1" name="age" placeholder="Age" required>
-<input type="number" step="0.1" name="experience" placeholder="Years of Experience" required>
-<input type="number" step="0.01" name="current_salary" placeholder="Current Salary" required>
-<select name="gender">{% for x in gender %}<option>{{x}}</option>{% endfor %}</select>
-<select name="education">{% for x in education %}<option>{{x}}</option>{% endfor %}</select>
-<select name="job">{% for x in jobs %}<option>{{x}}</option>{% endfor %}</select>
-<button type="submit">Predict</button>
-</form>
+<div class="container">
+
+    <h1>Salary Prediction</h1>
+    <p>Enter your details to estimate your salary.</p>
+
+    <form action="{{ url_for('predict') }}" method="POST">
+
+        <label for="age">Age</label>
+        <input
+            type="number"
+            id="age"
+            name="age"
+            min="18"
+            max="100"
+            step="1"
+            placeholder="Enter your age"
+            required
+        >
+        <div class="hint">Whole numbers only, from 18 to 100.</div>
+
+        <label for="experience">Experience (years)</label>
+        <input
+            type="number"
+            id="experience"
+            name="experience"
+            min="0"
+            max="82"
+            step="any"
+            placeholder="Enter your experience"
+            required
+        >
+        <div class="hint">Cannot exceed the years since age 18.</div>
+
+        <label for="current_salary">Current Salary (₹)</label>
+        <input
+            type="number"
+            id="current_salary"
+            name="current_salary"
+            min="0"
+            step="any"
+            placeholder="Enter your current salary"
+            required
+        >
+
+        <label for="gender">Gender</label>
+        <select id="gender" name="gender" required>
+            <option value="" disabled selected>Select gender</option>
+            {% for item in gender %}
+            <option value="{{ item }}">{{ item }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="education">Education</label>
+        <select id="education" name="education" required>
+            <option value="" disabled selected>Select education</option>
+            {% for item in education %}
+            <option value="{{ item }}">{{ item }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="job">Job Role</label>
+        <select id="job" name="job" required>
+            <option value="" disabled selected>Select job role</option>
+            {% for item in jobs %}
+            <option value="{{ item }}">{{ item }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Predict Salary</button>
+
+    </form>
 </div>
-</body></html>
+</body>
+</html>
